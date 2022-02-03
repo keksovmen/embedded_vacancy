@@ -34,16 +34,16 @@ Message message_create(message_p_count_t payloads_count) {
     if (payloads_count == 0) {
         return NULL;
     }
-    Message ptr = (Message)calloc(sizeof(Message), 1);
+    Message ptr = (Message)calloc(1, sizeof(struct Message));
     if (ptr == NULL) {
         return NULL;
     }
-    ptr->payloads->elements = (Payload)calloc(payloads_count, sizeof(Payload));
-    if ((ptr->payloads->elements) == NULL) {
+    ptr->payloads.elements = (Payload)calloc(payloads_count, sizeof(struct Payload));
+    if ((ptr->payloads.elements) == NULL) {
         free(ptr);
         return NULL;
     }
-    ptr->elements->count = payloads_count;
+    ptr->payloads.count = payloads_count;
     return ptr;
 }
 
@@ -57,9 +57,9 @@ void message_free_s(Message* message) {
     if (ptr == NULL) {
         return;
     }
-    if ((ptr->elements->elements)!= NULL) {
-        free(ptr->elements->elements);
-        ptr->elements->elements = NULL;
+    if ((ptr->payloads.elements)!= NULL) {
+        free(ptr->payloads.elements);
+        ptr->payloads.elements = NULL;
     }
     free(ptr);
     *message = NULL;
